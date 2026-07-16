@@ -21,9 +21,9 @@ jobs:
     - name: Push Docker image
       run: docker push saurabhkr38/myapp:${{ github.sha }}
 
+    - name: Set up Kubeconfig
+      run: |
+        echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
+
     - name: Deploy to Kubernetes
       run: kubectl set image deployment/myapp-deployment myapp=saurabhkr38/myapp:${{ github.sha }}
-
-    - name: Set up Kubeconfig
-      run: echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
-
